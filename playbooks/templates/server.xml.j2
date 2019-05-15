@@ -1,4 +1,5 @@
-censed to the Apache Software Foundation (ASF) under one or more
+<?xml version='1.0' encoding='utf-8'?>
+<!-- censed to the Apache Software Foundation (ASF) under one or more
   contributor license agreements.  See the NOTICE file distributed with
   this work for additional information regarding copyright ownership.
   The ASF licenses this file to You under the Apache License, Version 2.0
@@ -37,9 +38,10 @@ censed to the Apache Software Foundation (ASF) under one or more
 
     <Connector port="8080" protocol="HTTP/1.1" allowTrace="false"
                connectionTimeout="20000" URIEncoding="UTF-8" enableLookups="false"
-               redirectPort="8443" />
+               redirectPort="8443"
+               address="0.0.0.0" />
 
-    <Engine name="Catalina" defaultHost="35.188.177.13">
+    <Engine name="Catalina" defaultHost="{{ servername }}">
 
       <Realm className="org.apache.catalina.realm.LockOutRealm">
         <Realm className="org.apache.catalina.realm.UserDatabaseRealm"

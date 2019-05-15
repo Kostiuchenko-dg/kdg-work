@@ -1,0 +1,35 @@
+---
+- name: Install nginx
+  hosts: server
+  become: true
+  become_method: sudo
+
+  tasks:
+  - name: Add epel-release repo
+    yum:
+      name: epel-release
+      state: present
+
+  - name: Install nginx
+    yum:
+      name: nginx
+      state: present
+  - name: delete default index
+    file:
+      path: /usr/share/nginx/html/index.html
+      state: absent
+
+  - name: Insert Index Page
+    template:
+      src: /home/kostiuchenko/index.html
+      dest: /usr/share/nginx/html/index.html
+
+  - name: Start NGiNX
+    service:
+      name: nginx
+      state: started   
+
+  - name: Start Nginx as a service
+    service:
+      name: nginx
+      enabled: yes

@@ -1,0 +1,75 @@
+---
+- hosts: tomcat
+  become: yes
+  become_method: sudo
+  tasks:
+  - name: java
+    yum: name=java-1.8.0-openjdk.x86_64
+
+  - name: Download tomcat
+    get_url:
+      url: http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.94/bin/apache-tomcat-7.0.94.tar.gz
+      dest: /tmp/apache-tomcat-7.0.94.tar.gz
+
+  - name: Extract tomcat
+    command: /bin/tar xzf /tmp/apache-tomcat-7.0.94.tar.gz -C /opt/ creates=/opt/apache-tomcat-7.0.94
+
+  - name: Download tomcat extras libralies
+    get_url: url=http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.94/bin/extras/{{item.name}}
+             dest=/opt/apache-tomcat-7.0.94/{{item.dir}}/ 
+    with_items:
+      - { name: catalina-jmx-remote.jar  , dir: lib }
+      - { name: tomcat-juli-adapters.jar , dir: lib }
+      - { name: tomcat-juli.jar          , dir: bin }
+
+  - name: Remove docs apps
+    file: path=/opt/apache-tomcat-7.0.94/webapps/docs state=absent
+
+  - name: Remove examples apps
+    file: path=/opt/apache-tomcat-7.0.94/webapps/examples state=absent
+
+  - name: Remove logging.properties
+    file: path=/opt/apache-tomcat-7.0.94/conf/logging.properties state=absent
+
+  - name: Add tomcat configuration files - templates
+    template: src=tomcat/{{item}} dest=/opt/apache-tomcat-7.0.94/conf/{{item}}
+    with_items:
+      - server.xml
+      - tomcat-users.xml
+
+  - name: Remove home directory symlink
+    shell: rm -f /opt/tomcat removes=/opt/tomcat
+
+  - name: Create home directory symlink (Temporary for useradd)
+    file: src=/opt/apache-tomcat-7.0.94 path=/opt/tomcat state=link
+
+  - name: Create tomcat group
+    group: name=tomcat
+
+  - name: Create tomcat user
+    user: name=tomcat group=tomcat home=/opt/tomcat
+
+  - name: Remove home directory symlink (again)
+    shell: rm -f /opt/tomcat removes=/opt/tomcat
+
+  - name: Change tomcat directory permissions
+    file: path=/opt/apache-tomcat-7.0.94 owner=tomcat group=tomcat state=directory recurse=yes
+
+  - name: Recreate home directory symlink
+    file: src=/opt/apache-tomcat-7.0.94 owner=tomcat group=tomcat path=/opt/tomcat state=link
+
+  - name: Add tomcat systemd unit file
+    copy: 
+      src: /home/kostiuchenko/playbooks/systemd/tomcat.service 
+      dest: /usr/lib/systemd/system/tomcat.service 
+      owner: root
+      group: root
+
+  - name: systemd daemon-reload
+    shell: systemctl daemon-reload
+
+  - name: Start tomcat
+    service:
+      name: tomcat 
+      state: restarted 
+      enabled: yes

@@ -15,14 +15,14 @@
       name: redis
       state: present
 
-  -name: change line in conf file
-   lineinfile:
-     path: /etc/redis.conf
-     regexp: '^bind'
-     line: bind 0.0.0.0
+  - name: change line in conf file
+    lineinfile:
+      path: /etc/redis.conf
+      regexp: '^bind'
+      line: bind 0.0.0.0
 
   - name: Start redis
     service:
-      name: nginx
+      name: redis
       state: restarted
       enabled: yes

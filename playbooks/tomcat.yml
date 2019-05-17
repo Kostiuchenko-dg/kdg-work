@@ -15,10 +15,10 @@
     command: /bin/tar xzf /tmp/apache-tomcat-7.0.94.tar.gz -C /opt/ creates=/opt/apache-tomcat-7.0.94
 
   - name: Add tomcat configuration files - templates
-    template: src={{item}} dest=/opt/apache-tomcat-7.0.94/conf/{{item}}
+    template: src={{item}}.j2 dest=/opt/apache-tomcat-7.0.94/conf/{{item}}
     with_items:
-      - server.xml.j2
-      - tomcat-users.xml.j2
+      - server.xml
+      - tomcat-users.xml
 
   - name: Remove home directory symlink
     shell: rm -f /opt/tomcat removes=/opt/tomcat

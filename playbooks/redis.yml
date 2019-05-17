@@ -1,0 +1,28 @@
+---
+- name: Install redis
+  hosts: redis
+  become: true
+  become_method: sudo
+
+  tasks:
+  - name: Add epel-release repo
+    yum:
+      name: epel-release
+      state: present
+
+  - name: Install redis
+    yum:
+      name: redis
+      state: present
+
+  -name: change line in conf file
+   lineinfile:
+     path: /etc/redis.conf
+     regexp: '^bind'
+     line: bind 0.0.0.0
+
+  - name: Start redis
+    service:
+      name: nginx
+      state: restarted
+      enabled: yes

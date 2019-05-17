@@ -1,0 +1,27 @@
+---
+- name: install HAProxy
+  hosts: haproxy
+  become: true
+  become_method: sudo
+
+  tasks:
+  - name: Add epel-release repo
+    yum:
+      name: epel-release
+      state: present
+
+  - name: Install haproxy
+    yum:
+      name: haproxy
+      state: present
+
+  - name: Change config file
+    template:
+      src: haproxy.cfg.j2
+      dest: /etc/haproxy/haproxy.cfg
+
+  - name: Start haproxy
+    service:
+      name: haproxy
+      state: restarted
+      enabled: yes

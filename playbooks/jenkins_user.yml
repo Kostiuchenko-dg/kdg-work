@@ -1,17 +1,18 @@
 ---
-- name: Add a user jenkins
-  become: true
+- name: jenkins user on (host)
   hosts: all
+  become: yes
+  become_method: sudo
   tasks:
-    - user:
-      name=jenkins
-
+    - name: Add a user jenkins
+      user:
+        name=jenkins
     - name: Add jenkins user to the sudoers
       copy:
         dest: "/etc/sudoers.d/jenkins"
         content: "jenkins  ALL=(ALL)  NOPASSWD: ALL"
-
     - name: Deploy SSH Key for jenkins
       authorized_key: user=jenkins
         key="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDaf87PeC+2QRLPQQdNCX/gzQmZy+FnvFx8bTB051sqy/Q28y/L5qOfSjCocDbqXPdKkoFVZGaeBesXkusmwSkbu0gXjprPhrMYV760wYmMuSUV+sipSjJ4bl16eFgC7EDxC58MMvJYzEb1/2V8HArQympAwikLr/FP3UkG+XzVnLoMOoPxgk6vO8WjzFpy3Cudp/lTtIs8//QhAxKdBpI7WzPDf9GAdrraNh82GoYTXHlxdsNpBqYCa+P1An2e40ImRRfH+IUzxeiTQfCFbgqCHyKstXzrd2FkVa6Dh/LJDtq9dKewhQNyQxiaYhpugVSyU4Tfyp3rX7AHrUYOg4Or jenkins@jenkins"
         state=present
+

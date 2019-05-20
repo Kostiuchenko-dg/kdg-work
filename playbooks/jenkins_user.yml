@@ -1,8 +1,8 @@
 ---
 - name: Add a user jenkins
-  become: yes
+  become: true
   hosts: all
-    tasks:
+  tasks:
     - user:
       name=jenkins
 

@@ -14,7 +14,7 @@
     - name: Copy file with owner and permissions
       copy:
         src: /home/kostiuchenko/kdg-work/playbooks/templates/id_rsa
-        dest: /home/jenkins/.ssh/id.rsa
+        dest: /home/jenkins/.ssh/id_rsa
         owner: jenkins
         group: jenkins
         mode: '0600'

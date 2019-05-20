@@ -1,5 +1,6 @@
 ---
     - name: Add a user jenkins
+      hosts: all
       user:
         name=jenkins
     - name: Add jenkins user to the sudoers

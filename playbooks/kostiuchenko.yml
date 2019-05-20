@@ -1,0 +1,12 @@
+---
+    - name: Add a user kostiuchenko
+      user:
+        name=kostiuchenko
+    - name: Add kostiuchenko user to the sudoers
+      copy:
+        dest: "/etc/sudoers.d/kostiuchenko"
+        content: "kostiuchenko  ALL=(ALL)  NOPASSWD: ALL"
+    - name: Deploy SSH Key for kostiuchenko
+      authorized_key: user=kostiuchenko
+        key="ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQB2fLuxo63ZxU9U71R3v1xwAL/BFUR+7iBYFa4P46/3T2hIHuk4ubglFJwV0x9NNrsGNm/5McSWuQ0E3c5yoeaBhMjlm7xc4ImQ0wvYxzrmsx4facvlVkDa6yhjTXsLBqj+CfT3kYDpQuqDE9pPzxxOrr/o2xQl5UPaRDXp5XcGx2p9o1DYPvpwt0Zh3xpYELGZ3ID5Z58nRYXV3bHJxlIey1TJA46cSzKllpniv1AJ+iUnfuqrdax+iHmd/xBQ42Xy8ay7zu2z2uVuKbGjrMfeWz+0gAbjIrsAWHuKhrSe6Z4N9INIJLkmlGwtdzLPrTmCnt5+Hdd/BEnmWYuLm7vF kostiuchenko"
+        state=present

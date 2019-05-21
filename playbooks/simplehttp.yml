@@ -1,0 +1,23 @@
+---
+- name: Install simplehttpserver on python
+  hosts: server
+  become: true
+  become_method: sudo
+
+  tasks:
+  - name: install python
+    yum:
+      name: python
+      state: present
+
+  - name: Add simplehttp systemd unit file
+    template: src=simplehttp.service.j2 dest=/usr/lib/systemd/system/simplehttp.service
+
+  - name: systemd daemon-reload
+    shell: systemctl daemon-reload
+
+  - name: Start simplehttp.service
+    service:
+      name: simplehttp.service 
+      state: restarted 
+      enabled: yes

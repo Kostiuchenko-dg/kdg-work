@@ -21,7 +21,7 @@
 
   - name: Insert Index Page
     template:
-      src: /home/kostiuchenko/index.html
+      src: /tmp/kdg-work/playbooks/templates/index.html
       dest: /usr/share/nginx/html/index.html
 
   - name: Start NGiNX

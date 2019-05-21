@@ -1,0 +1,10 @@
+[tomcat]
+localhost servername=localhost
+[server]
+35.222.234.108
+[redis]
+35.243.201.7
+[haproxy]
+35.188.177.13
+[ansible-google]
+34.66.150.38

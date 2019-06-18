@@ -27,8 +27,8 @@
       regexp: "^#network.host"
       line: "network.host: 0.0.0.0"
 
-  - name: Start haproxy
+  - name: Start elasticsearch
     service:
-      name: haproxy
+      name: elasticsearch
       state: restarted
       enabled: yes

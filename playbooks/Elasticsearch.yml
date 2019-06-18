@@ -16,10 +16,10 @@
     
 - name: change listen adress
   lineinfile:
-        path: /etc/elasticsearch/elasticsearch.yml
-        state: present
-        regexp: "^#network.host"
-        line: network.host: 0.0.0.0
+    path: /etc/elasticsearch/elasticsearch.yml
+    state: present
+    regexp: "^#network.host"
+    line: network.host: 0.0.0.0
 
 - name: Start haproxy
   service:

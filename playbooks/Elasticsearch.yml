@@ -5,9 +5,9 @@
   become_method: sudo
 
 - name: copy elasticsearch repo
-    copy:
-      src: files/elasticsearch.repo
-      dest: /etc/yum.repos.d/elasticsearch.repo
+  copy:
+    src: files/elasticsearch.repo
+    dest: /etc/yum.repos.d/elasticsearch.repo
 
 - name: install elasticsearch
   yum:

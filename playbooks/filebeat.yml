@@ -4,23 +4,24 @@
   become: true
   become_method: sudo
 
-- name: add ELK repo
+  tasks:
+  - name: add ELK repo
     copy:
       src: files/logstash.repo
       dest: /etc/yum.repos.d/logstash.repo
 
-- name: setup filebeat
-  yum:
-    name: filebeat
-    state: present
+  - name: setup filebeat
+    yum:
+      name: filebeat
+      state: present
 
-- name: copy filebeat config
-  template:
-    src: filebeat.yml.j2
-    dest: /etc/filebeat/filebeat.yml
+  - name: copy filebeat config
+    template:
+      src: filebeat.yml.j2
+      dest: /etc/filebeat/filebeat.yml
 
-- name: start filebeat
-  service: 
-    name: filebeat
-    state: restarted
-    enabled: yes
+  - name: start filebeat
+    service: 
+      name: filebeat
+      state: restarted
+      enabled: yes

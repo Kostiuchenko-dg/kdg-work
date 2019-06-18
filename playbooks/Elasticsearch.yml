@@ -5,6 +5,11 @@
   become_method: sudo
 
   tasks:
+  - name: install java
+    yum:
+      name: java-1.8.0-openjdk 
+      state: present
+
   - name: copy elasticsearch repo
     copy:
       src: files/elasticsearch.repo

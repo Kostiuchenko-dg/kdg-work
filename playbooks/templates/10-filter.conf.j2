@@ -1,0 +1,12 @@
+filter {
+#example
+    grok {
+      match => [ "message","(?<ip>^[0-9\.]{7,16})" ]
+}
+    grok {
+      match => [ "message","(?<request_type>(GET|POST|PUT|PATCH|DELETE))" ]
+}
+    grok {
+      match => [ "message","(?<request>(?<=\s)\/\S*)" ]
+}
+}

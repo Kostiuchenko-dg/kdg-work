@@ -1,6 +1,6 @@
 ---
 - name: Install nginx
-  hosts: server
+  hosts: kibana
   become: true
   become_method: sudo
 
@@ -14,22 +14,24 @@
     yum:
       name: nginx
       state: present
+
   - name: delete default index
     file:
       path: /usr/share/nginx/html/index.html
       state: absent
 
-  - name: Insert Index Page
+  - name: change default config file
     template:
-      src: /tmp/kdg-work/playbooks/templates/index.html
-      dest: /usr/share/nginx/html/index.html
+      src: nginx.conf.j2
+      dest: /etc/nginx/nginx.conf
+    
+  - name: config nginx to serve kibana
+    template:
+      src: kibana.conf.j2
+      dest: /etc/nginx/conf.d/kibana.conf
 
   - name: Start NGiNX
     service:
       name: nginx
       state: started   
-
-  - name: Start Nginx as a service
-    service:
-      name: nginx
       enabled: yes

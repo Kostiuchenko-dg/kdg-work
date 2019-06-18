@@ -1,6 +1,6 @@
 ---
 - name: install HAProxy
-  hosts: haproxy
+  hosts: server
   become: true
   become_method: sudo
 

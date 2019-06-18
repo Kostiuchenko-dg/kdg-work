@@ -1,2 +1,4 @@
 [tomcat]
 localhost servername=localhost
+[server]
+35.184.160.197

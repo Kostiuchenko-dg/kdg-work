@@ -1,6 +1,7 @@
 [tomcat]
 localhost servername=localhost
 [server]
+<<<<<<< HEAD
 35.222.234.108
 [redis]
 35.243.201.7
@@ -8,3 +9,6 @@ localhost servername=localhost
 35.188.177.13
 [ansible-google]
 34.66.150.38
+=======
+35.184.160.197
+>>>>>>> ef032eb46a563de12c39c3b4b4dc3a01a3586658

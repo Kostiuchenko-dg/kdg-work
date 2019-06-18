@@ -4,25 +4,26 @@
   become: true
   become_method: sudo
 
-- name: copy elasticsearch repo
-  copy:
-    src: files/elasticsearch.repo
-    dest: /etc/yum.repos.d/elasticsearch.repo
+  tasks:
+  - name: copy elasticsearch repo
+    copy:
+      src: files/elasticsearch.repo
+      dest: /etc/yum.repos.d/elasticsearch.repo
 
-- name: install elasticsearch
-  yum:
-    name: elasticsearch
-    state: present
+  - name: install elasticsearch
+    yum:
+      name: elasticsearch
+      state: present
     
-- name: change listen adress
-  lineinfile:
-    path: /etc/elasticsearch/elasticsearch.yml
-    state: present
-    regexp: "^#network.host"
-    line: "network.host: 0.0.0.0"
+  - name: change listen adress
+    lineinfile:
+      path: /etc/elasticsearch/elasticsearch.yml
+      state: present
+      regexp: "^#network.host"
+      line: "network.host: 0.0.0.0"
 
-- name: Start haproxy
-  service:
-    name: haproxy
-    state: restarted
-    enabled: yes
+  - name: Start haproxy
+    service:
+      name: haproxy
+      state: restarted
+      enabled: yes

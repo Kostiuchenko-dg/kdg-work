@@ -1,0 +1,157 @@
+---
+- name: tests
+  hosts: "{{ deploy_hosts }}"
+  become: yes
+  become_method: sudo
+  tasks:
+  - name: delete nginx
+    yum:
+      name: nginx
+      state: absent
+
+  - name: delete haproxy
+    yum:
+      name: haproxy
+      state: absent
+  
+  - name: delete java
+    yum: 
+      name: java-1.8.0-openjdk.x86_64
+      state: absent
+            
+  - name: Delete tomcat
+    service:
+      name: tomcat
+      state: stopped
+    file:
+      path: /opt/apache-tomcat*
+      state: "{{ item }}"
+      with_items:
+        - absent
+        - directory
+
+  - name: Add epel-release repo
+    yum:
+      name: epel-release
+      state: present
+
+  - name: Install nginx
+    yum:
+      name: nginx
+      state: present
+    when: CHOOSEPROXY == 'nginx'
+
+  - name: delete default index
+    file:
+      path: /usr/share/nginx/html/index.html
+      state: absent
+    when: CHOOSEPROXY == 'nginx'
+
+  - name: Insert Index Page
+    template:
+      src: /tmp/kdg-work/playbooks/templates/index.html
+      dest: /usr/share/nginx/html/index.html
+    when: CHOOSEPROXY == 'nginx'
+
+  - name: delete default index
+    file:
+      path: /usr/share/nginx/html/index.html
+      state: absent
+    when: CHOOSEPROXY == 'nginx'
+
+  - name: delete default config
+    file:
+      path: /etc/nginx/nginx.conf
+      state: absent
+    when: CHOOSEPROXY == 'nginx'
+
+  - name: Insert config file
+    template:
+      src: /tmp/kdg-work/playbooks/templates/nginx.conf.j2
+      dest: /etc/nginx/nginx.conf
+    when: CHOOSEPROXY == 'nginx'
+
+  - name: Start NGiNX
+    service:
+      name: nginx
+      state: started
+    when: CHOOSEPROXY == 'nginx'
+
+  - name: Start Nginx as a service
+    service:
+      name: nginx
+      enabled: yes
+    when: CHOOSEPROXY == 'nginx'
+
+  - name: Install haproxy
+    yum:
+      name: haproxy
+      state: present
+    when: CHOOSEPROXY == 'haproxy'
+
+  - name: Change config file
+    template:
+      src: haproxy.cfg.j2
+      dest: /etc/haproxy/haproxy.cfg
+    when: CHOOSEPROXY == 'haproxy'
+
+  - name: Start haproxy
+    service:
+      name: haproxy
+      state: restarted
+      enabled: yes
+    when: CHOOSEPROXY == 'haproxy'
+
+  - name: install java
+    yum: name=java-1.8.0-openjdk.x86_64
+
+  - name: Download tomcat
+    get_url:
+      url: http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.94/bin/apache-tomcat-7.0.94.tar.gz
+      dest: /tmp/apache-tomcat-7.0.94.tar.gz
+
+
+  - name: Extract tomcat
+    command: /bin/tar xzf /tmp/apache-tomcat-7.0.94.tar.gz -C /opt/ creates=/opt/apache-tomcat-7.0.94
+
+  - name: Add tomcat configuration files - templates
+    template: src={{item}}.j2 dest=/opt/apache-tomcat-7.0.94/conf/{{item}}
+    with_items:
+      - server.xml
+      - tomcat-users.xml
+
+  - name: Remove home directory symlink
+    shell: rm -f /opt/tomcat removes=/opt/tomcat
+
+  - name: Create home directory symlink (Temporary for useradd)
+    file: src=/opt/apache-tomcat-7.0.94 path=/opt/tomcat state=link
+
+  - name: Create tomcat group
+    group: name=tomcat
+
+  - name: Create tomcat user
+    user: name=tomcat group=tomcat home=/opt/tomcat
+
+  - name: Remove home directory symlink (again)
+    shell: rm -f /opt/tomcat removes=/opt/tomcat
+
+  - name: Change tomcat directory permissions
+    file: path=/opt/apache-tomcat-7.0.94 owner=tomcat group=tomcat state=directory recurse=yes
+
+  - name: Recreate home directory symlink
+    file: src=/opt/apache-tomcat-7.0.94 owner=tomcat group=tomcat path=/opt/tomcat state=link
+
+  - name: Add tomcat systemd unit file
+    template: src=tomcat.service.j2 dest=/usr/lib/systemd/system/tomcat.service 
+
+  - name: systemd daemon-reload
+    shell: systemctl daemon-reload
+
+  - name: Start tomcat
+    service:
+      name: tomcat 
+      state: restarted 
+      enabled: yes
+   
+
+  

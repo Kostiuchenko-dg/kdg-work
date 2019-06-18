@@ -1,0 +1,36 @@
+---
+- name: Install logstash
+  hosts: logstash
+  become: true
+  become_method: sudo
+
+- name: add logstash repo
+    copy:
+      src: files/logstash.repo
+      dest: /etc/yum.repos.d/logstash.repo
+
+- name: setup logstash
+  yum:
+    name: logstash
+    state: present
+
+- name: Insert beats input
+  template:
+    src: 02-beats-input.conf.j2
+    dest: /etc/logstash/conf.d/02-beats-input.conf
+
+- name: insert filter
+  template:
+    src: 10-filter.conf.j2
+    dest: /etc/logstash/conf.d/10-filter.conf
+
+- name: insert output
+  template:
+    src: 30-elasticsearch-output.conf.j2
+    dest: /etc/logstash/conf.d/30-elasticsearch-output.conf 
+
+- name: start & enable logstash
+  service:
+    name: logstash
+    state: restarted
+    enabled: yes

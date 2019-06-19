@@ -27,6 +27,13 @@
       regexp: "^#network.host"
       line: "network.host: 0.0.0.0"
 
+  - name: uncomment port
+    lineinfile:
+      path: /etc/elasticsearch/elasticsearch.yml
+      state: present
+      regexp: "^#http.port"
+      line: "http.port: 9200"
+
   - name: Start elasticsearch
     service:
       name: elasticsearch

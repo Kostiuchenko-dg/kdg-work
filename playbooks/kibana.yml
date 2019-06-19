@@ -14,6 +14,12 @@
     yum:
       name: kibana
       state: present
+
+  - name: copy config file
+    template:
+      src: kibana.yml.j2
+      dest: /etc/kibana/kibana.yml
+    
      
   - name: start & enable kibana
     service:

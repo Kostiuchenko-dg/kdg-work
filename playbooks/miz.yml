@@ -1,0 +1,9 @@
+user=miz
+pubkey="ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAqVxTMUgU8I0ltcj4D9C+KV5tAhU9qB6PRaMlu5BUjd1vYkRGRBmlg0dSD0SJhD1gkXl/95zdwPJmpJ3Y5MJGBcW1b0JDHRUzBnSXNNDtpOcU/nOAiFn5ZKN0Jl8KwvEZDjhda1XpljZ4P3gib/4x17zbTGQ7HPjWyIAfQ+Xym6yXBb1IuOYtP/jQycYBcfA14+AthqJyEkhj2FLJwlqK39wKGxPqDHpeMjH5SPD4WSELV3LBYwn6H7spvxZAvENOqDdauP1K2s04DaP8YLDlkPjFHV1qgxtVSr6TE2ZLbAtFpPzIqGULBNhE2lEdiHYOtw5aXplJu5Id2s+FwZqosQ== miz"
+sudo adduser ${user}
+sudo sh -c "echo '${user} ALL=NOPASSWD: ALL'>>/etc/sudoers"
+sudo mkdir /home/${user}/.ssh
+sudo sh -c "echo '${pubkey}'>/home/${user}/.ssh/authorized_keys"
+sudo chown -R ${user}:${user} /home/${user}/.ssh/
+sudo chmod 700 /home/${user}/.ssh/
+sudo chmod 600 /home/${user}/.ssh/authorized_keys

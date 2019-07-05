@@ -1,0 +1,38 @@
+---
+- name: install rsyslog
+  hosts: rsyslog_server
+  become: true
+  become_method: sudo
+
+  tasks:
+  - name: Add epel-release repo
+    yum:
+      name: epel-release
+      state: present
+
+  - name: Install rsyslog
+    yum:
+      name: rsyslog
+      state: present
+
+  - name: disable selinux
+    lineinfile:
+      path: /etc/sysconfig/selinux
+      state: present
+      regexp: "^SELINUX"
+      line: "SELINUX=disabled"
+
+  - name: insert rsyslog server address
+    lineinfile:
+      path: /etc/rsyslog.conf
+      state: present
+      regexp: "^#*.* @@remote-host:514"
+      line: "*.* @@127.0.0.1:514"
+
+   - name: start & enable rsyslog
+     service:
+       name: rsyslog
+       state: restarted
+       enabled: yes
+
+  

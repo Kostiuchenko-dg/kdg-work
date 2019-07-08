@@ -29,10 +29,10 @@
       regexp: "^#*.* @@remote-host:514"
       line: "*.* @@127.0.0.1:514"
 
-   - name: start & enable rsyslog
-     service:
-       name: rsyslog
-       state: restarted
-       enabled: yes
+  - name: start & enable rsyslog
+    service:
+      name: rsyslog
+      state: restarted
+      enabled: yes
 
   

@@ -1,21 +1,23 @@
-[tomcat]
-localhost servername=localhost
-[server]
-<<<<<<< HEAD
-35.184.160.197
-=======
-<<<<<<< HEAD
-35.222.234.108
->>>>>>> 146514657c6561162b5e91b5cbf720860f97f42f
-[redis]
-35.243.201.7
-[haproxy]
-35.188.177.13
-[ansible-google]
-34.66.150.38
-<<<<<<< HEAD
-=======
-=======
-35.184.160.197
->>>>>>> ef032eb46a563de12c39c3b4b4dc3a01a3586658
->>>>>>> 146514657c6561162b5e91b5cbf720860f97f42f
+[mdc]
+mdc1.prod.gillbus.com
+mdc2.prod.gillbus.com
+mdc3.prod.gillbus.com
+mdc4.prod.gillbus.com
+mdc5.prod.gillbus.com
+mdc6.prod.gillbus.com
+mdc7.prod.gillbus.com
+mdc8.prod.gillbus.com
+mdc9.prod.gillbus.com
+mdc10.prod.gillbus.com
+mdc11.prod.gillbus.com
+mdc12.prod.gillbus.com
+mdc13.prod.gillbus.com
+mdc14.prod.gillbus.com
+mdc15.prod.gillbus.com
+mdc16.prod.gillbus.com
+mdc17.prod.gillbus.com
+mdc18.prod.gillbus.com
+mdc19.prod.gillbus.com
+mdc20.prod.gillbus.com
+mdc21.prod.gillbus.com
+mdc22.prod.gillbus.com

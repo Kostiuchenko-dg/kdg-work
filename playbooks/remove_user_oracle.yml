@@ -1,0 +1,13 @@
+---
+- hosts: "{{ deploy_hosts }}"
+  become: yes
+  tasks:
+    - name: del a user oracle
+      user:
+        name=oracle
+        state: absent
+        remove: yes
+    - name: del oracle user from the sudoers
+      file:
+        path: "/etc/sudoers.d/oracle"
+        state: absent

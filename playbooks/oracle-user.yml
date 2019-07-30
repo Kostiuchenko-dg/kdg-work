@@ -1,0 +1,19 @@
+---
+- hosts: "{{ deploy_hosts }}"
+  become: yes
+  tasks:
+    - name: Add a user oracle
+      user:
+        name=oracle
+    - name: Add oracle user to the sudoers
+      copy:
+        dest: "/etc/sudoers.d/oracle"
+        content: "oracle  ALL=(ALL)  NOPASSWD: ALL"
+    - name: Deploy SSH Key 1
+      authorized_key: user=oracle
+        key="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyurHnppHqZl3iAuY916F4fnTKcIZ7QrC6xgrOlg537MpvajS7dJnik6YXyjD+Js4yA3yXencFt56yBoGfD0O52CUwv1/bd75G3Wqy5rwlXcqBFLZIb7MwEJpNBq6JC1BF3S928fAmc/3mYHcHAAI2u/BRIPBcUHBHODa7LznH/DMdiHcvNpNSy2KPoxscFSW4iF37lTc+GrLPv0CGPw7MrHW+SS8a1R70SkAXLN716y8OK/hPx/NT+cPORKXQR4harBBXDIuMnEZAegbWA8ZME0eUV5KliJ17U70JdyYQYN1OIq6pUeKWQM2m5vjm3G0bbAMlT31rl+xWlMKN4mw9 busfor-dwh-scheduler"
+        state=present
+    - name: Deploy SSH Key 2
+      authorized_key: user=oracle
+        key="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7GF9GmPYdQJ+gsS6XQrvCgNGmcRMGpa3IOd9+O/jjrpsrP+xgNAFjr8MT5EQv/5S4x9CPVk9DQhvjlv972d0WtZ1G9P9donlJqvFYbTpJtEwhYymhlNW6VJuLjkVpN58au1/XDe2XtWGbeQBPh49fJtE0U4YhgdDLpupXaVxvPjKgNIdm3UrKOVU0bA0RNvn2O9FE2PVoeuEoAKD7NjhKYUqieTnciXuJzoKyFyahCkdqEyBipJyZ0SwQjvMcPrynuX/JXDJEjwzvkZWsvJafE8vFZKiq9+E20v9zjlfzjWWm7jCEJTS9IJJKcg0HfNRma5ABIcQqRQCEUtBlSxt/ busfor-dwh-scheduler-dev"
+        state=present

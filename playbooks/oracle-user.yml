@@ -4,7 +4,7 @@
   tasks:
     - name: Add a user oracle
       user:
-        name=oracle
+        name: oracle
     - name: Add oracle user to the sudoers
       copy:
         dest: "/etc/sudoers.d/oracle"
